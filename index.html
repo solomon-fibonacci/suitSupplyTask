@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Poiret+One|Quattrocento|Dosis:300" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <div id="header-div">
+        <h1> news HEADLINES </h1></div>
+    <div id="app">
+        <div id="filter">
+            <div class="text-filter-div">
+                <input type="text" id="textFilter">
+            </div>
+            <form id="dateFilterForm">
+                <input type="text" id="date-filter-day" name="day" placeholder="dd">
+                <input type="text" id="date-filter-month" name="month" placeholder="mm">
+                <input type="text" id="date-filter-year" name="year" placeholder="yyyy">
+                <button type="submit" id="dateFilterSubmit">Filter by date</button><br>
+                <span id="date-filter-error">Please enter a valid date</span>
+            </form>
+            
+        </div>
+        <ul id="articles-listing"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
