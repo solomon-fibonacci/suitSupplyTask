@@ -87,7 +87,6 @@ var newsReader = {
             this.data = this.reserveData.filter(function(article) {
                 articleDate = new Date(article.publishedDate);
                 articleDate.setHours(0, 0, 0, 0);
-                console.log(date.valueOf() + " <-> " + articleDate.valueOf());
                 return date.valueOf() === articleDate.valueOf();
             });
             this.swapDateFilterButton();
@@ -167,7 +166,7 @@ var newsReader = {
         } else if (event.target.closest('A') && event.target.closest('A').className == "related-story-toggle") {
             this.toggleRelatedStoriesDisplay(event);
         } else {
-            console.log(event.target);
+            return;
         }
     },
 
