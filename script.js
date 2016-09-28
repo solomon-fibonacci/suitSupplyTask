@@ -23,6 +23,10 @@ var newsReader = {
         this.textFilter = this.app.querySelector('#textFilter');
         this.listing = this.app.querySelector('#articles-listing');
         this.dateFilterForm = this.app.querySelector('#dateFilterForm');
+        this.fitlerButton = this.dateFilterForm.querySelector('#dateFilterSubmit');
+        this.filterYear = this.dateFilterForm.querySelector('#date-filter-year');
+        this.filterMonth = this.dateFilterForm.querySelector('#date-filter-month');
+        this.filterDay = this.dateFilterForm.querySelector('#date-filter-day');
     },
 
     bindEvents: function() {
@@ -46,174 +50,199 @@ var newsReader = {
         return day > 0 && day <= monthLength[month - 1];
     },
 
-    dispatchClickEvents: function() {
-
-    },
-
     filterArticlesByKeyword: function(event) {
-        this.data = this.reserveData;
         var filterText = event.target.value.trim();
         if (filterText !== "") {
-            var filterRE = new RegExp(filterText, 'i');
+            var filterRE = new RegExp(filterText.replace(/[#-}]/g, '\\$&'), 'i');
             this.data = this.reserveData.filter(function(article) {
                 return filterRE.test(article.title) || filterRE.test(article.content);
             });
-            while (this.listing.firstChild) this.listing.removeChild(this.listing.firstChild);
-            this.renderTitles();
+        } else {
+            this.data = this.reserveData;
         }
+        this.renderTitles();
+    },
+
+    getDate: function(inputDateForm) {
+        var inputDay = inputDateForm.querySelector('#date-filter-day').value.trim();
+        var inputMonth = inputDateForm.querySelector('#date-filter-month').value.trim();
+        var inputYear = inputDateForm.querySelector('#date-filter-year').value.trim();
+        var date;
+        if (this.isValidDate(`${inputDay}/${inputMonth}/${inputYear}`)) {
+            date = new Date(inputYear, inputMonth - 1, inputDay);
+            date.setHours(0, 0, 0, 0);
+        }
+        return date;
     },
 
     filterArticlesByDate: function(event) {
         event.preventDefault();
-        var day, month, year, inputDate;
-        day = event.target.querySelector('#date-filter-day').value;
-        month = event.target.querySelector('#date-filter-month').value;
-        year = event.target.querySelector('#date-filter-year').value;
-        if (day.trim() === "" && month.trim() === "" && year.trim() === "") {
-            this.data = this.reserveData;
-            this.renderTitles();
-            return false;
-        }
-        inputDate = `${day}/${month}/${year}`;
-        if (!this.isValidDate(inputDate)) {
+        event.target.querySelector('#date-filter-error').style.display = 'none';
+        var date = this.getDate(event.target);
+        if (event.target.querySelector('#clear-filter')) {
+            this.clearDateFilter();
+        } else if (!date) {
             event.target.querySelector('#date-filter-error').style.display = 'inline-block';
-            return false;
+        } else {
+            this.data = this.reserveData.filter(function(article) {
+                articleDate = new Date(article.publishedDate);
+                articleDate.setHours(0, 0, 0, 0);
+                console.log(date.valueOf() + " <-> " + articleDate.valueOf());
+                return date.valueOf() === articleDate.valueOf();
+            });
+            this.swapDateFilterButton();
+            if (this.data.length) {
+                this.renderTitles();
+            } else {
+                this.renderEmptyDateFilterResult();
+            }
         }
-        var filterDate = new Date(year, month-1, day);
-        filterDate.setHours(0, 0, 0, 0);
-        this.data = this.reserveData.filter(function(article) {
-            articleDate = new Date(article.publishedDate);
-            articleDate.setHours(0, 0, 0, 0);
-            return filterDate.valueOf() === articleDate.valueOf();
-        });
+    },
+
+    renderEmptyDateFilterResult: function() {
         while (this.listing.firstChild) this.listing.removeChild(this.listing.firstChild);
+        var msg = "Oops! No articles for that date :(";
+        var msgDiv = document.createElement('div');
+        msgDiv.innerHTML = msg;
+        msgDiv.setAttribute('id', 'empty-result');
+        this.app.appendChild(msgDiv);
+    },
+
+    swapDateFilterButton: function() {
+        this.fitlerButton.setAttribute('id', 'clear-filter');
+        this.fitlerButton.innerHTML = 'Clear filter';
+    },
+
+    clearDateFilter: function() {
+        this.data = this.reserveData;
+        this.fitlerButton.setAttribute('id', 'dateFilterSubmit');
+        this.fitlerButton.innerHTML = 'Filter by date';
+        this.filterYear.value = this.filterMonth.value = this.filterDay.value = "";
         this.renderTitles();
     },
 
     renderTitles: function() {
-        // the titles in an each loop
-        console.log("let's start rendering");
-        console.log(this.data);
-        console.log(this.listing);
         var storyItem, titleElement, title;
+        while (this.listing.firstChild) this.listing.removeChild(this.listing.firstChild);
         this.data.forEach(function(story, index) {
             storyItem = document.createElement('LI');
-            // title = document.createTextNode(story.title);
             titleElement = document.createElement('H2');
             titleLink = document.createElement('A');
             titleLink.setAttribute('class', 'title-link');
-            titleLink.href = `#title-${index}`;
+            //titleLink.href = `#title-${index}`;
             titleLink.innerHTML = story.title;
             titleElement.appendChild(titleLink);
             storyItem.appendChild(titleElement);
             storyItem.setAttribute('class', 'headline');
-            // console.log(typeof this.listing);
-
-
             this.listing.appendChild(storyItem);
-            // content = story.content;
-            // sourceUrl = story.url;
         }.bind(this));
-        // set variables that have been used in the template literals
-        // append the template literal to the list
-        // console.log(this.data);
-        // this.listing.innerHTML = JSON.stringify(this.data);
-    },
-
-    renderImage: function() {
-        // the title4
-
+        if (this.listing.nextSibling) {
+            this.listing.parentNode.removeChild(this.listing.nextSibling);
+        }
     },
 
     renderContent: function(event) {
-        if (event.target.closest('A') && event.target.closest('A').getAttribute('disabled')) {
-            return false;
-        } else if (event.target.closest('A').className === 'title-link') { //clicking blank space gices some console error
-            var story, imageElement, imageUrl, contentElement,
-                content, readmoreElement, sourceUrl, iamgeDiv, contentDiv,
-                titleLI, titleIndex;
-            event.target.closest('A').setAttribute('disabled', true);
-            titleLI = event.target.closest('LI');
-            //titleLI = event.target.parentNode.parentNode;
-            console.log(titleLI);
-            titleIndex = [].slice.call(titleLI.parentNode.children).indexOf(titleLI);
-
-            story = this.data[titleIndex];
-            //console.log(story);
-            imageUrl = story.image.url;
-            imageElement = document.createElement('IMG');
-            imageElement.src = imageUrl;
-            contentElement = document.createElement('P');
-            //content = document.createTextNode(story.content);
-            contentDiv = document.createElement('DIV');
-            contentDiv.setAttribute('class', 'article-content');
-            imageDiv = document.createElement('DIV');
-            imageDiv.setAttribute('class', 'article-image');
-            contentElement.innerHTML = story.content;
-            readmoreElement = document.createElement('A');
-            readmoreElement.appendChild(document.createTextNode(' read more'));
-            readmoreElement.href = story.unescapedUrl;
-            readmoreElement.target = '_blank';
-            contentElement.appendChild(readmoreElement);
-            contentDiv.appendChild(contentElement);
-            imageDiv.appendChild(imageElement);
-
-            titleLI.appendChild(imageDiv);
-
-            // console.log(story);
-            if (story.relatedStories && story.relatedStories.length > 0) {
-                var relatedStoryToggle = document.createElement('A');
-                relatedStoryToggle.setAttribute('class', 'related-story-toggle');
-                var relatedStoryHeader = document.createElement('H3');
-                relatedStoryHeader.setAttribute('class', 'related-story-header');
-                var toggleText = document.createTextNode("related stories ");
-                relatedStoryToggle.appendChild(toggleText);
-                var toggleIcon = document.createElement('IMG');
-                toggleIcon.src = "ic_expand_more_black_24px.svg";
-                relatedStoryToggle.appendChild(toggleIcon);
-                relatedStoryHeader.appendChild(relatedStoryToggle);
-                var relatedStoryList = document.createElement('UL');
-                relatedStoryList.setAttribute('class', 'related-story-list');
-                story.relatedStories.forEach(function(relatedStory) {
-                    var relatedStoryItem = document.createElement('LI');
-                    var relatedStoryAnchor = document.createElement('A');
-                    var horizontalLine = document.createElement('HR')
-                    relatedStoryAnchor.href = relatedStory.unescapedUrl;
-                    relatedStoryAnchor.target = '_blank';
-                    relatedStoryAnchor.innerHTML = relatedStory.title;
-                    relatedStoryItem.appendChild(relatedStoryAnchor);
-                    relatedStoryItem.appendChild(horizontalLine);
-                    relatedStoryList.appendChild(relatedStoryItem);
-
-                });
-                contentDiv.appendChild(relatedStoryHeader);
-                contentDiv.appendChild(relatedStoryList);
-
+        var headline = event.target.closest('H2');
+        if (headline && headline.parentNode.className === "headline") {
+            if (headline.nextSibling) {
+                this.toggleHeadline(headline);
+            } else { // click headline
+                var story, contentDiv, detailsDiv, titleLI;
+                var storyMarkup = this.buildStoryMarkup(headline, this.data);
+                story = storyMarkup.story;
+                contentDiv = storyMarkup.contentDiv;
+                detailsDiv = storyMarkup.detailsDiv;
+                titleLI = storyMarkup.titleLI;
+                if (story.relatedStories && story.relatedStories.length > 0) {
+                    var relatedStories = this.buildRelatedStoryMarkup(story);
+                    var relatedStoryHeader = relatedStories.header;
+                    var relatedStoryList = relatedStories.list;
+                    contentDiv.appendChild(relatedStoryHeader);
+                    contentDiv.appendChild(relatedStoryList);
+                }
+                detailsDiv.appendChild(contentDiv);
+                detailsDiv.style.display = 'block';
+                titleLI.appendChild(detailsDiv);
             }
-            titleLI.appendChild(contentDiv);
-        } else if (event.target.closest('A').className == "related-story-toggle") {
-            var target = event.target.closest('A');
-            if (target.parentNode.nextSibling.style.display !== "block") {
-                console.log(target.className);
-                console.log(target.parentNode.nextSibling.className);
-                target.parentNode.nextSibling.style.display = "block";
-                console.log(target.querySelector('img'));
-                target.querySelector('img').src = 'ic_expand_less_black_24px.svg';
-            } else {
-                target.parentNode.nextSibling.style.display = "none";
-                target.querySelector('img').src = 'ic_expand_more_black_24px.svg';
-                console.log(target.querySelector('img'));
-            }
+        } else if (event.target.closest('A') && event.target.closest('A').className == "related-story-toggle") {
+            this.toggleRelatedStoriesDisplay(event);
         } else {
             console.log(event.target);
         }
     },
 
-
-    renderRelatedStories: function() {
-
+    toggleHeadline: function(headline) {
+        if (headline.nextSibling.style.display === "block") {
+            headline.nextSibling.style.display = "none";
+        } else {
+            headline.nextSibling.style.display = "block";
+        }
     },
 
+    buildStoryMarkup: function(headline, data) {
+        var titleLI, titleIndex, story, imageUrl, imageElement, contentElement,
+            detailsDiv, contentDiv, imageDiv, readmoreElement;
+        titleLI = headline.parentNode;
+        titleIndex = [].slice.call(titleLI.parentNode.children).indexOf(titleLI);
+        story = data[titleIndex];
+        imageUrl = story.image.url;
+        imageElement = document.createElement('IMG');
+        imageElement.src = imageUrl;
+        contentElement = document.createElement('P');
+        detailsDiv = document.createElement('DIV');
+        contentDiv = document.createElement('DIV');
+        contentDiv.setAttribute('class', 'article-content');
+        imageDiv = document.createElement('DIV');
+        imageDiv.setAttribute('class', 'article-image');
+        contentElement.innerHTML = story.content;
+        readmoreElement = document.createElement('A');
+        readmoreElement.appendChild(document.createTextNode(' read more'));
+        readmoreElement.href = story.unescapedUrl;
+        readmoreElement.target = '_blank';
+        contentElement.appendChild(readmoreElement);
+        contentDiv.appendChild(contentElement);
+        imageDiv.appendChild(imageElement);
+        detailsDiv.appendChild(imageDiv);
+        return { story: story, contentDiv: contentDiv, detailsDiv: detailsDiv, titleLI: titleLI };
+    },
+
+    buildRelatedStoryMarkup: function(story) {
+        var relatedStoryToggle = document.createElement('A');
+        relatedStoryToggle.setAttribute('class', 'related-story-toggle');
+        var relatedStoryHeader = document.createElement('H3');
+        relatedStoryHeader.setAttribute('class', 'related-story-header');
+        var toggleText = document.createTextNode("related stories ");
+        relatedStoryToggle.appendChild(toggleText);
+        var toggleIcon = document.createElement('IMG');
+        toggleIcon.src = "ic_expand_more_black_24px.svg";
+        relatedStoryToggle.appendChild(toggleIcon);
+        relatedStoryHeader.appendChild(relatedStoryToggle);
+        var relatedStoryList = document.createElement('UL');
+        relatedStoryList.setAttribute('class', 'related-story-list');
+        story.relatedStories.forEach(function(relatedStory) {
+            var relatedStoryItem = document.createElement('LI');
+            var relatedStoryAnchor = document.createElement('A');
+            var horizontalLine = document.createElement('HR');
+            relatedStoryAnchor.href = relatedStory.unescapedUrl;
+            relatedStoryAnchor.target = '_blank';
+            relatedStoryAnchor.innerHTML = relatedStory.title;
+            relatedStoryItem.appendChild(relatedStoryAnchor);
+            relatedStoryItem.appendChild(horizontalLine);
+            relatedStoryList.appendChild(relatedStoryItem);
+        });
+        return { header: relatedStoryHeader, list: relatedStoryList };
+    },
+
+    toggleRelatedStoriesDisplay: function(event) {
+        var target = event.target.closest('A');
+        if (target.parentNode.nextSibling.style.display !== "block") {
+            target.parentNode.nextSibling.style.display = "block";
+            target.querySelector('img').src = 'ic_expand_less_black_24px.svg';
+        } else {
+            target.parentNode.nextSibling.style.display = "none";
+            target.querySelector('img').src = 'ic_expand_more_black_24px.svg';
+        }
+    }
 };
 
 newsReader.init();

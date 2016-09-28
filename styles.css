@@ -8,14 +8,8 @@
     src: url('fonts/Poiret_One/PoiretOne-Regular.ttf');
 }
 
-@font-face {
-    font-family: 'Quattrocento';
-    src: url('fonts/Quattrocento/Quattrocento-Regular.ttf');
-}
-
 body {
     margin: 0;
-    font-family: 'Dosis', sans-serif;
 }
 
 #app {
@@ -27,15 +21,8 @@ body {
     padding-top: 1%;
 }
 
-li img {
-    width: 100%;
-    /*height: 350px;*/
-    align: middle;
-}
-
 h1 {
     background-color: rgb(66, 42, 145);
-    /*box-shadow: 0px 3px 8px -2px rgba(22,6,56,1);*/
     width: 100%;
     margin: 0;
     color: rgb(255, 255, 255);
@@ -49,90 +36,14 @@ h1 {
     h1 {
         font-size: 5em;
     }
-}
-
-ul {
-    margin: 0;
-    list-style: none;
-    padding: 0;
-}
-
-li.headline {
-    margin: 2% 2%;
-    /*border-top: 4px solid white;*/
-    box-shadow: 0px 1px 1px 0px rgba(22, 22, 22, 0.3);
-    background-color: white;
-    min-height: 80px;
-    /*padding: 2% 2% 2% 2%;*/
-    /*padding-bottom: 12px;
-    padding-left: 2%;*/
-    /*padding-top: 40px;*/
-}
-
-
-/*div.article-image, div.article-content{
-    display: inline-block;
-    width: 50%;
-}
-*/
-
-div.article-content {
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.97em;
-    font-weight: lighter;
-    text-align: justify;
-    line-height: 1.5em;
-    padding: 2% 2%;
-}
-
-
-/*inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07)*/
-
-ul.related-story-list li {
-    /*border-top: 1px solid white;*/
-    font-size: 0.9em;
-    list-style: none;
-    margin-top: 1%;
-}
-
-h2 a {
-    color: rgb(63, 63, 63);
-    font-size: 0.9em;
-    font-weight: lighter;
-    /*padding-left: 50px;*/
-}
-
-@media screen and (min-width: 400px) {
     h2 a {
         font-size: 1.1em;
     }
 }
 
-h3 {
-    margin: 0;
-}
-
-h2 {
-    margin: 0;
-    /*padding-left: 2%;
-    padding-top: 4%;
-    padding-bottom: 4%;*/
-    padding: 2% 1%;
-}
-
-ul a {
-    text-decoration: none;
-}
-
-ul a:hover {
-    text-decoration: none;
-    color: rgb(238, 63, 119);
-}
-
 #filter {
     text-align: center;
     height: 5em;
-    /*padding-top: 4%;*/
 }
 
 @media screen and (min-width: 500px) {
@@ -144,30 +55,71 @@ ul a:hover {
 #textFilter {
     background: white url(ic_search_black_24px.svg) right center no-repeat;
     border: 1px solid rgba(211, 211, 211, 0.4);
-    height: 25px;
+    border-radius: 0;
+    height: 30px;
     width: 250px;
     margin-bottom: 3px;
+    padding: 0;
     padding-right: 30px;
+    padding-left: 10px;
     font-family: 'Dosis', sans-serif;
     font-size: 1em;
+}
+
+#textFilter:focus {
+    outline-width: 0;
+    border: 1px solid rgba(238, 63, 145, 0.4);
+}
+
+#dateFilterForm {
+    display: inline-block;
+}
+
+#dateFilterSubmit:focus {
+    outline-width: 0;
+    border: 1px solid rgba(238, 63, 145, 0.4);
 }
 
 #date-filter-day,
 #date-filter-month,
 #date-filter-year {
-    height: 25px;
+    height: 30px;
     width: 45px;
     padding: 0;
+    padding-left: 5px;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
     border: 1px solid rgba(211, 211, 211, 0.4);
     font-family: 'Dosis', sans-serif;
     font-size: 1em;
     text-align: center;
-    color: rgb(195, 195, 195);
+    color: rgb(95, 95, 95);
+    border-radius: 0;
 }
 
-button#dateFilterSubmit {
+#date-filter-day:focus {
+    outline-width: 0;
+    border: 1px solid rgba(238, 63, 145, 0.4);
+    border-radius: 0px;
+}
+
+#date-filter-month:focus {
+    outline-width: 0;
+    border: 1px solid rgba(238, 63, 145, 0.4);
+    border-radius: 0px;
+}
+
+#date-filter-year:focus {
+    outline-width: 0;
+    border: 1px solid rgba(238, 63, 145, 0.4);
+    border-radius: 0px;
+}
+
+button#dateFilterSubmit,
+button#clear-filter {
     border-radius: 0;
-    height: 25px;
+    height: 32px;
     width: 90px;
     padding: 0;
     border: 0;
@@ -175,18 +127,97 @@ button#dateFilterSubmit {
     font-size: 1em;
     background-color: rgb(66, 42, 145);
     color: white;
+    border-radius: 0;
 }
 
-form {
-    display: inline;
+button#clear-filter {
+    background-color: rgb(255, 255, 255);
+    color: rgb(66, 42, 145);
+    border: 1px solid rgb(66, 42, 145);
 }
 
-#dateFilterForm {
-    display: inline-block;
+#clear-filter:focus {
+    outline-width: 0;
+}
+
+#date-filter-error {
+    display: none;
+    color: rgb(255, 0, 0);
+    font-size: 0.9em;
+}
+
+div#empty-result {
+    color: red;
+    height: 80px;
+    vertical-align: middle;
+    padding-top: 50px;
+    text-align: center;
+}
+
+ul {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    padding-top: 50px;
+}
+
+li.headline {
+    margin: 2% 2%;
+    box-shadow: 0px 1px 1px 0px rgba(22, 22, 22, 0.3);
+    background-color: white;
+    min-height: 80px;
+}
+
+h2 {
+    margin: 0;
+    padding: 2% 1%;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(238, 63, 119);
+}
+
+h2 a {
+    color: rgb(63, 63, 63);
+    font-size: 0.9em;
+    font-weight: lighter;
+}
+
+li img {
+    width: 100%;
+    align: middle;
+}
+
+ul h2:hover {
+    cursor: pointer;
+}
+
+h3 {
+    margin: 0;
+}
+
+div.article-content {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.97em;
+    font-weight: lighter;
+    text-align: justify;
+    line-height: 1.5em;
+    padding: 2% 2%;
+}
+
+ul.related-story-list li {
+    font-size: 0.9em;
+    list-style: none;
+    margin-top: 1%;
 }
 
 .related-story-list {
-    display: none
+    display: none;
+    padding-top: 10px;
 }
 
 .related-story-toggle img {
@@ -203,12 +234,6 @@ form {
 .related-story-toggle:hover {
     text-decoration: none;
     color: rgb(238, 63, 145);
-}
-
-#date-filter-error {
-    display: none;
-    color: red;
-    font-size: 0.9em;
 }
 
 .text-filter-div {
