@@ -1,249 +1,269 @@
 @font-face {
-    font-family: 'Dosis';
-    src: url('fonts/Dosis/Dosis-Light.ttf');
+  font-family: 'Dosis';
+  src: url('fonts/Dosis/Dosis-Light.ttf');
 }
 
 @font-face {
-    font-family: 'Poiret One';
-    src: url('fonts/Poiret_One/PoiretOne-Regular.ttf');
+  font-family: 'Poiret One';
+  src: url('fonts/Poiret_One/PoiretOne-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto/Roboto-Light.ttf');
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
 #app {
-    background-color: #fafafa;
-    font-family: 'Dosis', sans-serif;
-    max-width: 750px;
-    margin: 0 auto;
-    padding-bottom: 10px;
-    padding-top: 1%;
+  background-color: rgb(250, 250, 250);
+  font-family: 'Dosis', sans-serif;
+  max-width: 750px;
+  margin: 0 auto;
+  padding-bottom: 10px;
+  padding-top: 1%;
 }
 
 h1 {
-    background-color: rgb(66, 42, 145);
-    width: 100%;
-    margin: 0;
-    color: rgb(255, 255, 255);
-    font-family: 'Poiret One', cursive;
-    font-size: 4em;
-    font-weight: lighter;
-    text-align: center;
-}
-
-@media screen and (min-width: 400px) {
-    h1 {
-        font-size: 5em;
-    }
-    h2 a {
-        font-size: 1.1em;
-    }
+  background-color: rgb(66, 42, 145);
+  width: 100%;
+  margin: 0;
+  color: rgb(255, 255, 255);
+  font-family: 'Poiret One', cursive;
+  font-size: 4em;
+  font-weight: lighter;
+  text-align: center;
 }
 
 #filter {
-    text-align: center;
-    height: 5em;
+  text-align: center;
+  height: 5em;
 }
 
-@media screen and (min-width: 500px) {
-    #filter {
-        height: 2em;
-    }
+#text-filter {
+  background: white url(ic_search_black_24px.svg) right center no-repeat;
+  border: 1px solid rgba(211, 211, 211, 0.4);
+  border-radius: 0;
+  height: 30px;
+  width: 250px;
+  margin-bottom: 3px;
+  padding: 0;
+  padding-right: 30px;
+  padding-left: 10px;
+  font-family: 'Dosis', sans-serif;
+  font-size: 1em;
 }
 
-#textFilter {
-    background: white url(ic_search_black_24px.svg) right center no-repeat;
-    border: 1px solid rgba(211, 211, 211, 0.4);
-    border-radius: 0;
-    height: 30px;
-    width: 250px;
-    margin-bottom: 3px;
-    padding: 0;
-    padding-right: 30px;
-    padding-left: 10px;
-    font-family: 'Dosis', sans-serif;
-    font-size: 1em;
+#text-filter:focus {
+  outline-width: 0;
+  border: 1px solid rgba(238, 63, 145, 0.4);
 }
 
-#textFilter:focus {
-    outline-width: 0;
-    border: 1px solid rgba(238, 63, 145, 0.4);
-}
-
-#dateFilterForm {
-    display: inline-block;
-}
-
-#dateFilterSubmit:focus {
-    outline-width: 0;
-    border: 1px solid rgba(238, 63, 145, 0.4);
+#date-filter-form {
+  display: inline-block;
 }
 
 #date-filter-day,
 #date-filter-month,
 #date-filter-year {
-    height: 30px;
-    width: 45px;
-    padding: 0;
-    padding-left: 5px;
-    border-radius: 0;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0px;
-    border: 1px solid rgba(211, 211, 211, 0.4);
-    font-family: 'Dosis', sans-serif;
-    font-size: 1em;
-    text-align: center;
-    color: rgb(95, 95, 95);
-    border-radius: 0;
+  height: 30px;
+  width: 45px;
+  padding: 0;
+  padding-left: 5px;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  border: 1px solid rgba(211, 211, 211, 0.4);
+  font-family: 'Dosis', sans-serif;
+  font-size: 1em;
+  text-align: center;
+  color: rgb(95, 95, 95);
+  border-radius: 0;
 }
 
 #date-filter-day:focus {
-    outline-width: 0;
-    border: 1px solid rgba(238, 63, 145, 0.4);
-    border-radius: 0px;
+  outline-width: 0;
+  border: 1px solid rgba(238, 63, 145, 0.4);
+  border-radius: 0px;
 }
 
 #date-filter-month:focus {
-    outline-width: 0;
-    border: 1px solid rgba(238, 63, 145, 0.4);
-    border-radius: 0px;
+  outline-width: 0;
+  border: 1px solid rgba(238, 63, 145, 0.4);
+  border-radius: 0px;
 }
 
 #date-filter-year:focus {
-    outline-width: 0;
-    border: 1px solid rgba(238, 63, 145, 0.4);
-    border-radius: 0px;
+  outline-width: 0;
+  border: 1px solid rgba(238, 63, 145, 0.4);
+  border-radius: 0px;
 }
 
-button#dateFilterSubmit,
+button#date-filter-submit,
 button#clear-filter {
-    border-radius: 0;
-    height: 32px;
-    width: 90px;
-    padding: 0;
-    border: 0;
-    font-family: 'Dosis', sans-serif;
-    font-size: 1em;
-    background-color: rgb(66, 42, 145);
-    color: white;
-    border-radius: 0;
+  border-radius: 0;
+  height: 32px;
+  width: 90px;
+  padding: 0;
+  border: 0;
+  font-family: 'Dosis', sans-serif;
+  font-size: 1em;
+  background-color: rgb(66, 42, 145);
+  color: rgb(255, 255, 255);
+  border-radius: 0;
+}
+
+button#date-filter-submit:focus {
+  outline-width: 0;
+  border: 1px solid rgba(238, 63, 145, 0.4);
 }
 
 button#clear-filter {
-    background-color: rgb(255, 255, 255);
-    color: rgb(66, 42, 145);
-    border: 1px solid rgb(66, 42, 145);
+  background-color: rgb(255, 255, 255);
+  color: rgb(66, 42, 145);
+  border: 1px solid rgb(66, 42, 145);
 }
 
 #clear-filter:focus {
-    outline-width: 0;
+  outline-width: 0;
 }
 
 #date-filter-error {
-    display: none;
-    color: rgb(255, 0, 0);
-    font-size: 0.9em;
+  display: none;
+  color: rgb(255, 0, 0);
+  font-size: 0.9em;
 }
 
 div#empty-result {
-    color: red;
-    height: 80px;
-    vertical-align: middle;
-    padding-top: 50px;
-    text-align: center;
+  color: rgb(255, 0, 0);
+  height: 80px;
+  vertical-align: middle;
+  padding-top: 50px;
+  text-align: center;
 }
 
 ul {
-    margin: 0;
-    list-style: none;
-    padding: 0;
-    padding-top: 50px;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  padding-top: 50px;
 }
 
 li.headline {
-    margin: 2% 2%;
-    box-shadow: 0px 1px 1px 0px rgba(22, 22, 22, 0.3);
-    background-color: white;
-    min-height: 80px;
+  margin: 2% 2%;
+  box-shadow: 0px 1px 1px 0px rgba(22, 22, 22, 0.3);
+  background-color: rgb(255, 255, 255);
+  min-height: 90px;
+  position: relative;
 }
-
+.thumbnail-image {
+    display: inline-block;
+}
 h2 {
-    margin: 0;
-    padding: 2% 1%;
+  margin: 0;
+  padding: 2% 1%;
+  display: inline-block;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-a:hover {
-    color: rgb(238, 63, 119);
+a:hover,
+li.headline:hover > h2 a {
+  color: rgb(238, 63, 119);
 }
 
 h2 a {
-    color: rgb(63, 63, 63);
-    font-size: 0.9em;
-    font-weight: lighter;
+  color: rgb(63, 63, 63);
+  font-size: 0.9em;
+  font-weight: lighter;
 }
 
 li img {
-    width: 100%;
-    align: middle;
+  width: 100%;
+  align: middle;
 }
 
 ul h2:hover {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.publisher_date {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.7em;
+  text-align: right;
+  color: rgb(170, 170, 170);
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
 }
 
 h3 {
-    margin: 0;
+  margin: 0;
 }
 
 div.article-content {
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.97em;
-    font-weight: lighter;
-    text-align: justify;
-    line-height: 1.5em;
-    padding: 2% 2%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.97em;
+  font-weight: lighter;
+  text-align: justify;
+  line-height: 1.5em;
+  padding: 2% 2%;
 }
 
 ul.related-story-list li {
-    font-size: 0.9em;
-    list-style: none;
-    margin-top: 1%;
+  font-size: 0.9em;
+  list-style: none;
+  margin-top: 1%;
 }
 
 .related-story-list {
-    display: none;
-    padding-top: 10px;
+  display: none;
+  padding-top: 10px;
 }
 
 .related-story-toggle img {
-    height: 20px;
-    width: 20px;
-    position: absolute;
-    padding-top: 2px;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  padding-top: 2px;
 }
 
 .related-story-toggle {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .related-story-toggle:hover {
-    text-decoration: none;
-    color: rgb(238, 63, 145);
+  text-decoration: none;
+  color: rgb(238, 63, 145);
 }
 
 .text-filter-div {
-    display: inline-block;
-    vertical-align: top;
+  display: inline-block;
+  vertical-align: top;
 }
 
 hr {
-    border: 0;
-    height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media screen and (min-width: 400px) {
+  h1 {
+    font-size: 5em;
+  }
+  h2 a {
+    font-size: 1.1em;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  #filter {
+    height: 2em;
+  }
 }
